@@ -38,6 +38,54 @@ namespace xq
         char dlc;
     };
 
+    class CANMessageImpl
+    {
+    public:
+        std::vector<char> getMessage() { return m_message; }
+        void setMessage(std::vector<char> value) { m_message = value; }
+        std::vector<char> getValues() { return m_values; }
+        void setValues(std::vector<char> value) { m_values = value; }
+        std::vector<char> getCrc() { return m_crc; }
+        void setCrc(std::vector<char> value) { m_crc = value; }
+        char getDlc() { return m_dlc; }
+        void setCrc(char value) { m_dlc = value; }
+
+    private:
+        std::vector<char> m_message;
+        std::vector<char> m_values;
+        std::vector<char> m_crc;
+        char m_dlc;
+    };
+
+    class CANMessageEncapsulated
+    {
+    public:
+        void addValue(char index, char value)
+        {
+            m_canMessageImpl->getValues().at(index) = value;
+        }
+
+        void calculateCRC()
+        {
+            int crcValue = 0;
+            for (int i = 0; i < m_canMessageImpl->getValues().size(); ++i)
+            {
+                crcValue += m_canMessageImpl->getValues().at(i);
+                // Logic to turn the crcValue into a vector of hexadecimal numbers
+            }
+        }
+
+        std::vector<char> getMessage()
+        {
+            // Logic to add the m_values and the m_crc to m_message
+            return m_canMessageImpl->getMessage();
+
+        }
+
+    private:
+        CANMessageImpl* m_canMessageImpl;
+    };
+
     class CANMessageTransceiver
     {
     public:
@@ -105,7 +153,7 @@ namespace xq
             // Store the received messages in database
         }
 
-        void openDbConnection()
+        void openDbConnection(const std::string& connectionString )
         {
             // Open connection to database
         }
@@ -113,6 +161,30 @@ namespace xq
         void closeDbConnection()
         {
             // Close connection to database
+        }
+
+    private:
+        // Data and helper functions, not visible to the user
+    };
+
+    class CANMessageTransceiverNonEncapsulated
+    {
+    public:
+        bool sendCanMessage(const CANMessage& message)
+        {
+            // Send the message over CAN
+        }
+
+        CANMessage receiveCanMessage()
+        {
+            // Receive a CAN message
+            storeCanMessage();
+            return CANMessage{};
+        }
+
+        void storeCanMessage()
+        {
+            // Store the message in some medium
         }
 
     private:
@@ -200,6 +272,24 @@ namespace xq
         }
     private:
         std::string m_filePath;
+    };
+
+    class DatabaseManager
+    {
+    public:
+        void connectToDb()
+        {
+            // If not connected already to db, connect.
+        }
+
+        void getAllRecordsFromDb()
+        {
+            // If not connected to db
+            connectToDb();
+
+            // ....
+            // Get all records
+        }
     };
 }
 #endif // !HIGH_QUALITY_CLASS
