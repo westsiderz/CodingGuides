@@ -191,7 +191,7 @@ namespace xq
         // Data and helper functions, not visible to the user
     };
 
-    class ClusterECUBad : public CANMessageTransceiver
+    class ClusterECUBad
     {
     public:
         void setAnalogSpeed(int value)
@@ -204,18 +204,19 @@ namespace xq
             // Set the value of the digital speedometer
         }
 
-        bool sendCanMessage(const CANMessage& message)
+        bool sendCanMessage()
         {
             // Send the message over CAN
         }
 
-        CANMessage receiveCanMessage()
+        bool receiveCanMessage()
         {
             // Receive a CAN message
-            return CANMessage{};
         }
 
     private:
+        int m_speedValue;
+        CANMessage m_message;
         // Some private data
     };
 
@@ -277,6 +278,7 @@ namespace xq
     class DatabaseManager
     {
     public:
+
         void connectToDb()
         {
             // If not connected already to db, connect.
@@ -289,6 +291,49 @@ namespace xq
 
             // ....
             // Get all records
+        }
+    };
+
+    class WidgetTyped
+    {
+    public:
+        void drawLabel()
+        {
+            // Draw a label
+        }
+
+        void drawImage()
+        {
+            // Draw an image
+        }
+
+        int getWidgetType()
+        {
+            return m_widgetType;
+        }
+
+    private:
+        int m_widgetType;
+    };
+
+    class IWidget
+    {
+        virtual void draw() = 0;
+    };
+
+    class ImageWidget : public IWidget
+    {
+        void draw() override
+        {
+            // Draw an image
+        }
+    };
+
+    class LabelWidget : public IWidget
+    {
+        void draw() override
+        {
+            // Draw a label
         }
     };
 }
