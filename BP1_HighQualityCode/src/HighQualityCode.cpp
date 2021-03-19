@@ -1,5 +1,6 @@
 #include <iostream>
 #include <HighQualityClass.hpp>
+#include <HighQualityRoutines.hpp>
 
 void sendCanMessage(char dlc, std::vector<char> values, std::vector<char> crc) 
 {
@@ -13,5 +14,6 @@ void sendCanMessage(xq::CANMessage message)
 
 int main()
 {
+    xq::useMacro();
     return 0;
 }
